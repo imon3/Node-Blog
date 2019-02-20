@@ -1,7 +1,6 @@
 const express = require('express');
 
-const postRouter = require('./data/router/post-router');
-const userRouter = require('./data/router/user-router');
+const userPostRouter = require('./data/router/user-post-router');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const server = express();
@@ -9,8 +8,8 @@ const server = express();
 server.use(express.json());
 server.use(helmet());
 server.use(morgan());
-server.use('/api/posts', postRouter);
-server.use('/api/users', userRouter);
+server.use('/api', userPostRouter);
+
 
 server.get('/', (req, res) => {
     res.send('Server Running');

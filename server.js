@@ -8,7 +8,7 @@ const server = express();
 server.use(express.json());
 server.use(helmet());
 server.use(morgan());
-server.use('/api', userPostRouter, restriction, userName('mike'));
+server.use('/api', restriction, lowerCaseName, userName('mike'), userPostRouter);
 
 
 server.get('/', (req, res) => {
@@ -26,14 +26,22 @@ function restriction(req, res, next) {
     }
 }
 
+function lowerCaseName(req, res, next) {
+    const username = req.headers.name || '';
+    const lowerCaseName = username.toLowerCase();
+    req.headers.name = lowerCaseName;
+    next();
+}
+
 function userName(name) {
     return function (req, res, next) {
         const username = req.headers.name;
+
         if (username === '') {
             res.status(404).json({
                 message: 'incorrect name.'
             })
-        } else if (username.toLowercase() !== name) {
+        } else if (username !== name) {
             res.status(404).json({
                 message: 'incorrect name.'
             })

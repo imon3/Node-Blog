@@ -35,19 +35,20 @@ router.get('/users/:id', async (req, res) => {
     }
 })
 
-router.get('/users/:id', async (req, res) => {
+router.get('/users/:id/posts', async (req, res) => {
     try {
-        const user = await UserDb.getUserPosts(req.params.id)
-        if (user) {
-            res.status(200).json(user)
+        const userPosts = await UserDb.getUserPosts(req.params.id);
+
+        if (userPosts.length > 0) {
+            res.status(200).json(userPosts)
         } else {
             res.status(404).json({
-                message: 'User not found'
+                message: 'The user could not be found.'
             })
         }
     } catch {
         res.status(500).json({
-            error: 'Error retrieving user'
+            error: 'Error retrieving user post.'
         })
     }
 })
@@ -186,7 +187,7 @@ router.delete('/posts/:id', async (req, res) => {
 
 // TIMEOUT ERROR 
 router.use((req, res) => {
-    res.status(404).send('Page took too long to load.')
+    res.status(404).send('Page could not load.')
 })
 
 module.exports = router;

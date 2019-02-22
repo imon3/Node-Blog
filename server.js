@@ -8,7 +8,7 @@ const server = express();
 server.use(express.json());
 server.use(helmet());
 server.use(morgan());
-server.use('/api', restriction, lowerCaseName, userName('mike'), userPostRouter);
+server.use('/api', userPostRouter);
 
 
 server.get('/', (req, res) => {
